@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Cardistry Practice - Home</title>
+    <link rel="icon" href="logo_v1.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=BioRhyme&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="moves.js"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a class="homebut" href="index.html" title="Home Page">Home</a>
+        <a class="altbut homebut" href="about.html" title="Learn more about us">About us</a>
+        <a class="altbut" href="https://discord.gg/PaUf6xu" target="_blank" title="Open our discord">Our Discord</a>
+        <a href="move list.html" target="blank_" title="movelist">Move list</a>
+    </div>
+
+    <!-- Main content with move display -->
+    <div class="main">
+        <!-- Three columns for one-handed, two-handed, and aerial moves -->
+        <div class="row">
+            <div class="colonne" id="one-handed">
+                <h1>One handed :</h1>
+                <p id="one-handed-move"></p>
+                <div id="one-handed-video"></div>
+            </div>
+            
+            <div class="colonne2" id="two-handed">
+                <h1>Two handed :</h1>
+                <p id="two-handed-move"></p>
+                <div id="two-handed-video"></div>
+            </div>
+            
+            <div class="colonne" id="aerial">
+                <h1>Aerial :</h1>
+                <p id="aerial-move"></p>
+                <div id="aerial-video"></div>
+            </div>
+        </div>
+		
+
+        <!-- Button to fetch new moves -->
+        <button class="newmovebut" type="button" onclick="getNewMoves()">Get new moves</button>
+		
+		<div class="centeredtext">
+			<p>some videos are shown as unavailable but you can open them on youtube where they are supposed to work</p>
+		</div>
+    <!-- Footer -->
+    <div class="footer">
+        <p>Version: 0.8 - 30/10/2024</p>
+    </div>
+
+    <!-- Script to handle displaying moves -->
+    <script>
+        // Function to display a move in a specific section
+        function displayMove(sectionId, move) {
+            document.getElementById(sectionId + '-move').innerText = move.move;
+
+            const videoContainer = document.getElementById(sectionId + '-video');
+            videoContainer.innerHTML = ''; // Clear previous video if any
+            if (move.link) {
+                const iframe = document.createElement('iframe');
+                iframe.width = '360';
+                iframe.height = '180';
+                iframe.src = `https://www.youtube.com/embed/${move.link}`;
+                iframe.frameBorder = '0';
+                iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+                iframe.allowFullscreen = true;
+                videoContainer.appendChild(iframe);
+            }
+        }
+
+        // Function to get and display new random moves
+        function getNewMoves() {
+            displayMove('one-handed', randomOhMove());
+            displayMove('two-handed', randomThMove());
+            displayMove('aerial', randomAerial());
+        }
+
+        // Initial load of moves on page load
+        getNewMoves();
+    </script>
+</body>
+</html>

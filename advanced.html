@@ -1,0 +1,210 @@
+<head>
+	<meta charset="utf-8">
+	<title>
+		Cardistry Practice - Home
+	</title>
+	<link rel="icon" href="logo_v1.png" type="image/x-icon">
+	<link rel="stylesheet" href="style.css" type="text/css"/>
+	<link href="https://fonts.googleapis.com/css2?family=Cabin&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=BioRhyme&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <script type="text/javascript">
+	//une main
+	var one_hand = [
+
+	//(advanced)//
+	{
+		move: "Cobra Cut by De'vo",
+		link: "yIfuFqZUH3s"
+	},
+	{
+    		move: "One Handed Mechanical by Dimitri Arleri",
+    		link: "GR-j3Zt1bUk"
+	},
+	{
+    		move: "Chaser by Dimitri Arleri",
+    		link: "m8cnf1HFEu4"
+	},
+//	{
+//		move: "Mantra by Tobias Levin",
+//		link: null
+//	},
+//	{
+//		move: "Rubix by Buseong Na",
+//		link: null
+//	},
+	{
+    		move: "Emratef by Mattis",
+    		link: "0UC8EOzSE1o"
+	},
+	{
+		move: "TRIST by Birger Karlsson",
+		link: "9Mnh8dTyTsQ" 
+	},
+	{
+		move: "V-Cuts by Tobias Levin",
+		link: "PPMUpCCqNiI"
+	},
+	];
+	var randomOhMove = one_hand[Math.floor(Math.random() * one_hand.length)];
+	//deux mains
+	var two_hand = [
+//advenced th//
+	{
+		move: "Boooom by Lun Zi",
+		link: "KgOz2Qm1m1w"
+	},
+	//Eye Cut by Bone Ho: https://www.youtube.com/watch?v=QGkvZNP_OK8
+	{
+    		move: "Eye Cut by Bone Ho",
+    		link: "QGkvZNP_OK8"
+	},
+//Helping Hand by Stefan La Iacona: https://www.youtube.com/watch?v=v0sz728TVzs
+	{
+    		move: "Helping Hand by Stefan La Iacona",
+    		link: "v0sz728TVzs"
+	},
+//	{
+//		move: "Fission by Yang Chan",
+//		link: null
+//	},
+//	{
+//		move: "Mocking God by Duy Nguyen",
+//		link: null
+//	},
+	{
+		move: "Mockingbird by Daren Yeow"	,
+		link: "Hb4snFAFzTw"
+	},
+	];
+	var randomThMove = two_hand[Math.floor(Math.random() * two_hand.length)];
+	var aerial = [
+
+	];
+	var randomAerial	= aerial[Math.floor(Math.random() * aerial.length)];
+  </script>
+  
+</head>
+
+
+
+
+<body>
+	
+	<!-- Navbar -->
+	
+	<div class="navbar">
+		<a class="homebut" href="index.html" title="Home Page">Home</a>
+		<a class="altbut homebut" href="about.html" title="Learn more about us">About us</a>
+		<a class="altbut" href="https://discord.gg/PaUf6xu" target="_blank" title="Open our discord">Our Discord</a>
+		<a href="https://docs.google.com/spreadsheets/d/1zH0OUIn-vmZQlSQnIV_Cr1BQgEdBpiGtUb3g5cbtZ98/edit?usp=sharing" target="blank_" title="Go to the move reference spreasheet">Move list</a>
+	</div>
+	
+	<div class="premain">
+	
+		<div class="dropdown">
+			<button class="dropbtn">Sort by difficulty ▾</button>
+			<div class="dropdown-content">
+				<a href="easy.html">Easy</a>
+				<a href="intermediate.html">Intermediate</a>
+				<a href="advanced.html">Advanced</a>
+			</div>
+		</div>
+		
+	</div>
+	
+	<!-- Main -->
+	
+	
+	<div class="main">
+	
+		<!-- 3 colonnes -->
+		
+	
+		<div class="row">
+			
+			<div class="colonne">
+				<h1>
+				  One handed :
+				</h1>
+			  
+				<p>
+				<script type="text/javascript">
+					var move = randomOhMove;
+					document.write(move.move)
+				</script>	
+				
+				<br>
+				<br>
+				<script type="text/javascript">
+					if(move.link != null){
+						document.write("<iframe width=\"360\" height=\"180\" src=\"https://www.youtube.com/embed/" + move.link + "\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>")
+					}
+				</script>
+				</p>
+				
+			</div>
+			
+			<div class="colonne2">
+				<h1>
+				Two handed :
+				</h1>
+				
+				<p>
+				<script type="text/javascript">
+					var move = randomThMove;
+					document.write(move.move)
+				</script>
+
+				<br>
+				<br>
+				
+				<script type="text/javascript">
+					if(move.link != null){
+						document.write("<iframe width=\"360\" height=\"180\" src=\"https://www.youtube.com/embed/" + move.link + "\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>")
+					}
+				</script>
+				</p>
+				
+			</div>
+			
+			<div class="colonne">
+				<h1>
+					Aerial :
+				</h1>
+				
+				<p>
+				<script type="text/javascript">
+					var move = randomAerial;
+					document.write(move.move);
+				</script>
+				
+				<br>
+				<br>
+				
+				<script type="text/javascript">
+					if(move.link != null){
+						document.write("<iframe width=\"360\" height=\"180\" src=\"https://www.youtube.com/embed/" + move.link + "\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>")
+					}
+				</script>
+				</p>
+			</div>
+		</div>
+		
+		
+		<button class="newmovebut" type="reset" onclick="document.location.reload()">Get new moves</button>
+		
+	</div>
+	 
+	 
+	<!-- footer -->
+	 
+	 
+	<div class="footer">
+		<p>
+		Version : 0.7 - 02/09/2020
+		</p>
+	</div>
+</body>
