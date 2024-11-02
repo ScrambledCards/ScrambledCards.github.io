@@ -75,8 +75,8 @@ button {
 	background-color: rgb(44,50,48);
 	top: 0;
 	width: 100%;
-    margin: 0;
-    padding: 0;
+    	margin: 0;
+    	padding: 0;
 	z-index: 1;
 	position: sticky;
 	border-radius: 0 0 8px 8px;
