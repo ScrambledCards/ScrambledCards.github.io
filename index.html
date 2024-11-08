@@ -1,90 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
+
 <head>
+    <!-- meta -->
     <meta charset="utf-8">
     <title>Cardistry Practice - Home</title>
-    <link rel="icon" href="logo_v1.png" type="image/x-icon">
-    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link rel="icon" href="res/img/logo_v1.png" type="image/x-icon">
+    <!-- <link rel="stylesheet" href="css/style.css" type="text/css"> -->
+
+    <!-- fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cabin&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=BioRhyme&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- libs -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="moves.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- scripts -->
+    <script src="js/moveList.js"></script>
 </head>
 
 <body>
-    <!-- Navbar -->
-    <div class="navbar">
-        <a class="homebut" href="index.html" title="Home Page">Home</a>
-        <a class="altbut homebut" href="about.html" title="Learn more about us">About us</a>
-        <a class="altbut" href="https://discord.gg/PaUf6xu" target="_blank" title="Open our discord">Our Discord</a>
-        <a href="move list.html" target="blank_" title="movelist">Move list</a>
-    </div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="res/img/logo_v1.png" alt="Scrambledcards" height="50">
+                Scrambled Cards
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="move list.html">Move list</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://discord.gg/PaUf6xu">Our discord</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Main content with move display -->
-    <div class="main">
-        <!-- Three columns for one-handed, two-handed, and aerial moves -->
-        <div class="row">
-            <div class="colonne" id="one-handed">
-                <h1>One handed :</h1>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md">
+                <h1>One handed</h1>
                 <p id="one-handed-move"></p>
                 <div id="one-handed-video"></div>
             </div>
-            
-            <div class="colonne2" id="two-handed">
-                <h1>Two handed :</h1>
+            <div class="col-md">
+                <h1>Two handed</h1>
                 <p id="two-handed-move"></p>
                 <div id="two-handed-video"></div>
             </div>
-            
-            <div class="colonne" id="aerial">
-                <h1>Aerial :</h1>
+            <div class="col-md">
+                <h1>Aerial</h1>
                 <p id="aerial-move"></p>
                 <div id="aerial-video"></div>
             </div>
         </div>
-		
 
-        <!-- Button to fetch new moves -->
-        <button class="newmovebut" type="button" onclick="getNewMoves()">Get new moves</button>
-		
-		<div class="centeredtext">
-			<p>some videos are shown as unavailable but you can open them on youtube where they are supposed to work</p>
-		</div>
-    <!-- Footer -->
-    <div class="footer">
-        <p>Version: 0.8 - 30/10/2024</p>
+        <div class="row justify-content-center text-center my-4">
+            <div class="col-md-4 text-center">
+                <button class="btn btn-danger" onclick="getNewMoves()">
+                    Get new moves
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="alert alert-info text-center" role="alert">
+                Some videos are shown as unavailable but you can open them on youtube where they are supposed to work
+            </div>
+        </div>
     </div>
 
-    <!-- Script to handle displaying moves -->
-    <script>
-        // Function to display a move in a specific section
-        function displayMove(sectionId, move) {
-            document.getElementById(sectionId + '-move').innerText = move.move;
+    <div class="container">
+        <footer class="pt-3 mt-4 sticky-bottom">
+            <p class="text-center text-body-secondary">Version: 0.9 - 11/2024</p>
+        </footer>
+    </div>
 
-            const videoContainer = document.getElementById(sectionId + '-video');
-            videoContainer.innerHTML = ''; // Clear previous video if any
-            if (move.link) {
-                const iframe = document.createElement('iframe');
-                iframe.width = '360';
-                iframe.height = '180';
-                iframe.src = `https://www.youtube.com/embed/${move.link}`;
-                iframe.frameBorder = '0';
-                iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-                iframe.allowFullscreen = true;
-                videoContainer.appendChild(iframe);
-            }
-        }
-
-        // Function to get and display new random moves
-        function getNewMoves() {
-            displayMove('one-handed', randomOhMove());
-            displayMove('two-handed', randomThMove());
-            displayMove('aerial', randomAerial());
-        }
-
-        // Initial load of moves on page load
-        getNewMoves();
-    </script>
+    <script src="js/getNewMoves.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
 </body>
+
 </html>
