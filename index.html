@@ -109,77 +109,69 @@
         </div>
     </div>
 
-    <!-- Pied de page dynamique -->
-<footer style="text-align:center;margin-top:2em;font-size:0.9em;color:#888;">
-    Version : <span class="site-version"></span> | Date : <span class="site-date"></span>
-</footer>
-<script src="js/version.js"></script>
+    <footer style="text-align:center;margin-top:2em;font-size:0.9em;color:#888;" id="footer"></footer>
 
     <!-- Modal HTML -->
-<div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="changelogModalLabel">What's New (June 13, 2025)</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <ul style="text-align:left;">
-          <li>Added favorites system (star to add/remove, cross to remove in favorites)</li>
-          <li>Favorites now sync across all pages and are visually indicated</li>
-          <li>Filter by difficulty added to main page</li>
-          <li>Layout improvements: stable move/video/button positions</li>
-          <li>Navbar and footer are now consistent on all pages</li>
-          <li>"Clear Favorites" button added</li>
-          <li>Bug fixes and more!</li>
-        </ul>
-        <p>Enjoy the updates!</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-      </div>
+    <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changelogModalLabel">What's New (June 13, 2025)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul style="text-align:left;">
+                        <li>Added favorites system (star to add/remove, cross to remove in favorites)</li>
+                        <li>Favorites now sync across all pages and are visually indicated</li>
+                        <li>Filter by difficulty added to main page</li>
+                        <li>Layout improvements: stable move/video/button positions</li>
+                        <li>Navbar and footer are now consistent on all pages</li>
+                        <li>"Clear Favorites" button added</li>
+                        <li>Bug fixes and more!</li>
+                    </ul>
+                    <p>Enjoy the updates!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
     <script src="js/getNewMoves.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
         </script>
     <script>
-// Save the original random functions
-//const originalRandomOhMove = randomOhMove;
-//const originalRandomThMove = randomThMove;
-//const originalRandomAerial = randomAerial;
+        function getFilteredRandomMove(list, difficulty) {
+            if (difficulty === 'all') return list[Math.floor(Math.random() * list.length)];
+            // Recherche stricte du mot-clé difficulty dans le nom du move
+            const filtered = list.filter(move => move.move.toLowerCase().includes(difficulty.toLowerCase()));
+            if (filtered.length === 0) return null;
+            return filtered[Math.floor(Math.random() * filtered.length)];
+        }
 
-function getFilteredRandomMove(list, difficulty) {
-    if (difficulty === 'all') return list[Math.floor(Math.random() * list.length)];
-    // Recherche stricte du mot-clé difficulty dans le nom du move
-    const filtered = list.filter(move => move.move.toLowerCase().includes(difficulty.toLowerCase()));
-    if (filtered.length === 0) return null;
-    return filtered[Math.floor(Math.random() * filtered.length)];
-}
+        function getNewMovesFiltered() {
+            const difficulty = document.getElementById('difficultyFilter').value;
+            displayMove('one-handed', getFilteredRandomMove(one_hand, difficulty), difficulty);
+            displayMove('two-handed', getFilteredRandomMove(two_hand, difficulty), difficulty);
+            displayMove('aerial', getFilteredRandomMove(aerial, difficulty), difficulty);
+        }
 
-function getNewMovesFiltered() {
-    const difficulty = document.getElementById('difficultyFilter').value;
-    displayMove('one-handed', getFilteredRandomMove(one_hand, difficulty), difficulty);
-    displayMove('two-handed', getFilteredRandomMove(two_hand, difficulty), difficulty);
-    displayMove('aerial', getFilteredRandomMove(aerial, difficulty), difficulty);
-}
+        document.getElementById('applyFilter').onclick = getNewMovesFiltered;
 
-document.getElementById('applyFilter').onclick = getNewMovesFiltered;
-
-document.querySelector('button.btn.btn-danger').onclick = getNewMovesFiltered;
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    if (!localStorage.getItem('changelogSeen-2025-06-13')) {
-        var changelogModal = new bootstrap.Modal(document.getElementById('changelogModal'));
-        changelogModal.show();
-        localStorage.setItem('changelogSeen-2025-06-13', 'yes');
-    }
-});
-</script>
+        document.querySelector('button.btn.btn-danger').onclick = getNewMovesFiltered;
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!localStorage.getItem('changelogSeen-2025-06-13')) {
+                var changelogModal = new bootstrap.Modal(document.getElementById('changelogModal'));
+                changelogModal.show();
+                localStorage.setItem('changelogSeen-2025-06-13', 'yes');
+            }
+        });
+    </script>
+    <script src="js/version.js"></script>
 </body>
 
 </html>
