@@ -22,6 +22,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- scripts -->
     <script src="js/moveList.js"></script>
+    <script src="js/favorites.js"></script>
 </head>
 
 <body>
@@ -51,6 +52,13 @@
                         <a class="nav-link" href="about.html">About us</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="favorites.html" style="font-weight:bold;">
+                            <i class="fa fa-star" style="color:gold;"></i> Favorites
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -59,6 +67,7 @@
         <div class="alert alert-info" role="alert">
             Tip: use <kbd>Ctrl + F</kbd> to search for any move !
         </div>
+        <button id="clear-favorites" class="btn btn-danger mb-3">Clear Favorites</button>
         <div class="row">
             <div class="col-md">
                 <h1>One Handed</h1>
@@ -76,36 +85,90 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const oneHandContainer = document.getElementById("oneHand");
-                const twoHandContainer = document.getElementById("twoHand");
-                const aerialContainer = document.getElementById("aerial");
+        const oneHandContainer = document.getElementById("oneHand");
+        const twoHandContainer = document.getElementById("twoHand");
+        const aerialContainer = document.getElementById("aerial");
 
-                moveList.forEach(function (list) {
-                    list.list.forEach(function (move) {
-                        const listItem = document.createElement("li");
-                        listItem.style.margin = "10px";
-                        const link = document.createElement("a");
-                        link.href = `https://www.youtube.com/watch?v=${move.link}`;
-                        link.textContent = move.move;
-                        link.target = "_blank";
-                        listItem.appendChild(link);
+        // Get favorites as strings for comparison
+        const favorites = (JSON.parse(localStorage.getItem('favoriteMoves')) || []).map(String);
 
-                        if (list.title === "One Handed") {
-                            oneHandContainer.appendChild(listItem);
-                        } else if (list.title === "Two Handed") {
-                            twoHandContainer.appendChild(listItem);
-                        } else if (list.title === "Aerial") {
-                            aerialContainer.appendChild(listItem);
-                        }
-                    });
-                });
+        function createListItem(move, section, idx) {
+            const listItem = document.createElement("li");
+            listItem.style.margin = "10px";
+            listItem.style.display = "flex";
+            listItem.style.alignItems = "center";
+            listItem.style.justifyContent = "space-between";
+
+            const link = document.createElement("a");
+            link.href = `https://www.youtube.com/watch?v=${move.link}`;
+            link.textContent = move.move;
+            link.target = "_blank";
+
+            // Star
+            const isFavorite = favorites.includes(String(move.id));
+            const star = document.createElement("span");
+            star.textContent = isFavorite ? "★" : "☆";
+            star.style.cursor = "pointer";
+            star.style.fontSize = "1.3em";
+            if (isFavorite) {
+                star.style.color = "gold";
+                star.style.textShadow = "0 0 2px #bfa100";
+            } else {
+                star.style.color = "#bbb"; // thin gray
+                star.style.textShadow = "0 0 1px #888"; // subtle outline
+            }
+            star.title = isFavorite ? "Remove from favorites" : "Add to favorites";
+            star.onclick = function () {
+                // Toggle favorite
+                let favs = (JSON.parse(localStorage.getItem('favoriteMoves')) || []).map(String);
+                const moveIdStr = String(move.id);
+                if (favs.includes(moveIdStr)) {
+                    favs = favs.filter(id => id !== moveIdStr);
+                    star.textContent = "☆";
+                    star.style.color = "#bbb";
+                    star.style.textShadow = "0 0 1px #888";
+                    star.title = "Add to favorites";
+                } else {
+                    favs.push(moveIdStr);
+                    star.textContent = "★";
+                    star.style.color = "gold";
+                    star.style.textShadow = "0 0 2px #bfa100";
+                    star.title = "Remove from favorites";
+                }
+                localStorage.setItem('favoriteMoves', JSON.stringify(favs));
+            };
+
+            // Layout: move name left, star right
+            listItem.appendChild(link);
+            listItem.appendChild(star);
+
+            return listItem;
+        }
+
+        moveList.forEach(function (list) {
+            list.list.forEach(function (move, idx) {
+                const listItem = createListItem(move, list.title, idx);
+                if (list.title === "One Handed") {
+                    oneHandContainer.appendChild(listItem);
+                } else if (list.title === "Two Handed") {
+                    twoHandContainer.appendChild(listItem);
+                } else if (list.title === "Aerial") {
+                    aerialContainer.appendChild(listItem);
+                }
             });
+        });
+
+        document.getElementById('clear-favorites').onclick = function() {
+            localStorage.removeItem('favoriteMoves');
+            location.reload();
+        };
+    });
         </script>
     </div>
 
     <div class="container">
         <footer class="pt-3 mt-4 sticky-bottom">
-            <p class="text-center text-body-secondary">Version: 0.9 - 11/2024</p>
+            <p class="text-center text-body-secondary">Version: 1.0 - 06/2025</p>
         </footer>
     </div>
 

@@ -22,6 +22,28 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- scripts -->
     <script src="js/moveList.js"></script>
+    <script src="js/favorites.js"></script>
+    <style>
+    .move-name {
+    min-height: 3.5em;
+    /* Remove display:flex and align-items:center to allow stacking */
+    text-align: center;
+    }
+    .move-name-text {
+        display: block;
+        min-height: 3.5em; /* Reserve space for 2 lines */
+        text-align: center;
+        font-size: 1.1em;
+        margin-bottom: 0.2em;
+        word-break: break-word;
+    }
+    .fav-btn-row {
+        display: block;
+        text-align: center;
+        margin: 0.3em 0 0.5em 0;
+        min-height: 1.7em; /* Reserve space for the star */
+    }
+</style>
 </head>
 
 <body>
@@ -51,25 +73,44 @@
                         <a class="nav-link" href="about.html">About us</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="favorites.html" style="font-weight:bold;">
+                            <i class="fa fa-star" style="color:gold;"></i> Favorites
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <div class="container">
+        <div class="row justify-content-center mt-3 mb-4">
+            <div class="col-md-6 text-center">
+                <label for="difficultyFilter" class="form-label">Filter by Difficulty:</label>
+                <select id="difficultyFilter" class="form-select d-inline-block w-auto" style="max-width:200px;">
+                    <option value="all">All</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+                <button id="applyFilter" class="btn btn-primary ms-2">Filter</button>
+            </div>
+        </div>
         <div class="row text-center">
             <div class="col-md">
                 <h1>One handed</h1>
-                <p id="one-handed-move"></p>
+                <div id="one-handed-move" class="move-name"></div>
                 <div id="one-handed-video"></div>
             </div>
             <div class="col-md">
                 <h1>Two handed</h1>
-                <p id="two-handed-move"></p>
+                <div id="two-handed-move" class="move-name"></div>
                 <div id="two-handed-video"></div>
             </div>
             <div class="col-md">
                 <h1>Aerial</h1>
-                <p id="aerial-move"></p>
+                <div id="aerial-move" class="move-name"></div>
                 <div id="aerial-video"></div>
             </div>
         </div>
@@ -91,14 +132,74 @@
 
     <div class="container">
         <footer class="pt-3 mt-4 sticky-bottom">
-            <p class="text-center text-body-secondary">Version: 0.9 - 11/2024</p>
+            <p class="text-center text-body-secondary">Version: 1.0 - 06/2025</p>
         </footer>
     </div>
+
+    <!-- Modal HTML -->
+<div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changelogModalLabel">What's New (June 13, 2025)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul style="text-align:left;">
+          <li>Added favorites system (star to add/remove, cross to remove in favorites)</li>
+          <li>Favorites now sync across all pages and are visually indicated</li>
+          <li>Filter by difficulty added to main page</li>
+          <li>Layout improvements: stable move/video/button positions</li>
+          <li>Navbar and footer are now consistent on all pages</li>
+          <li>"Clear Favorites" button added</li>
+          <li>Bug fixes and more!</li>
+        </ul>
+        <p>Enjoy the updates!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <script src="js/getNewMoves.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
         </script>
+    <script>
+// Save the original random functions
+const originalRandomOhMove = randomOhMove;
+const originalRandomThMove = randomThMove;
+const originalRandomAerial = randomAerial;
+
+function getFilteredRandomMove(list, difficulty) {
+    if (difficulty === 'all') return list[Math.floor(Math.random() * list.length)];
+    const filtered = list.filter(move => move.move.toLowerCase().includes(difficulty));
+    if (filtered.length === 0) return list[Math.floor(Math.random() * list.length)];
+    return filtered[Math.floor(Math.random() * filtered.length)];
+}
+
+function getNewMovesFiltered() {
+    const difficulty = document.getElementById('difficultyFilter').value;
+    displayMove('one-handed', getFilteredRandomMove(one_hand, difficulty));
+    displayMove('two-handed', getFilteredRandomMove(two_hand, difficulty));
+    displayMove('aerial', getFilteredRandomMove(aerial, difficulty));
+}
+
+document.getElementById('applyFilter').onclick = getNewMovesFiltered;
+
+document.querySelector('button.btn.btn-danger').onclick = getNewMovesFiltered;
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    if (!localStorage.getItem('changelogSeen-2025-06-13')) {
+        var changelogModal = new bootstrap.Modal(document.getElementById('changelogModal'));
+        changelogModal.show();
+        localStorage.setItem('changelogSeen-2025-06-13', 'yes');
+    }
+});
+</script>
 </body>
 
 </html>

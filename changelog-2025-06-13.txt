@@ -1,0 +1,22 @@
+Changelog for June 13, 2025
+===========================
+
+1. Added a clickable star (☆/★) next to each move in the move list page to allow adding/removing favorites.
+2. Implemented a favorites system using localStorage, with functions to add, remove, and display favorite moves.
+3. Ensured all ID comparisons and storage use string type for consistency and reliability.
+4. Created a favorites page (favorites.html) that lists all favorite moves, each with a clickable cross (✖) to remove from favorites.
+5. Made the star button always centered on its own line below the move name on the main page.
+6. Reserved vertical space for move names to prevent layout shifting when names wrap to a second line.
+7. Changed move containers from <p> to <div> for valid HTML structure.
+8. Updated the navigation bar on all main pages to include a sticky Favorites link on the right, with a gold star icon.
+9. Fixed issues with favorites not displaying due to ID type mismatches.
+10. Added a 'Clear Favorites' button to both the favorites page and the move list page, allowing users to clear all favorites at once.
+11. Improved the appearance of the non-favorite (empty) star by making its outline thin gray, so it stands out less.
+12. Ensured the move list page allows toggling favorites directly by clicking the star.
+13. Ensured all scripts are loaded in the correct order for proper functionality.
+14. Added a difficulty filter (beginner, intermediate, advanced) to the move list and index pages, with a dropdown and button. The filter is centered below the navbar and works with the "Get new moves" button.
+15. Added a one-time changelog modal (Bootstrap) to index.html, shown only once per user per update.
+16. Commented out unavailable moves and renumbered all move IDs in one_hand, two_hand, and aerial arrays to be globally unique and sequential, skipping commented-out moves.
+17. Ensured there are no jumps or duplicates in move IDs across all arrays (IDs are now globally unique site-wide).
+
+All changes were made to improve the user experience, consistency, and reliability of the favorites feature, move filtering, and site navigation.

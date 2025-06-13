@@ -1,9 +1,24 @@
 // Function to display a move in a specific section
 function displayMove(sectionId, move) {
-    document.getElementById(sectionId + '-move').innerText = move.move;
+    const moveContainer = document.getElementById(sectionId + '-move');
+    const favorites = getFavoriteMoves();
+    const isFavorite = favorites.includes(String(move.id));
+    const starChar = isFavorite ? '★' : '☆';
+
+    moveContainer.innerHTML = `
+        <span class="move-name-text">${move.move}</span>
+        <div class="fav-btn-row">
+            <span 
+                id="${sectionId}-star"
+                style="cursor:pointer;color:gold;font-size:1.5em;" 
+                title="Add to favorites"
+                onclick="toggleFavorite(${move.id}, '${sectionId}-star')"
+            >${starChar}</span>
+        </div>
+    `;
 
     const videoContainer = document.getElementById(sectionId + '-video');
-    videoContainer.innerHTML = ''; // Clear previous video if any
+    videoContainer.innerHTML = '';
     if (move.link) {
         const iframe = document.createElement('iframe');
         iframe.width = '360';
