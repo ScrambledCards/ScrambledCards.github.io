@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cardistry Practice - Home</title>
     <link rel="icon" href="res/img/logo_v1.png" type="image/x-icon">
-    <!-- <link rel="stylesheet" href="css/style.css" type="text/css"> -->
+    <link rel="stylesheet" href="css/style.css" type="text/css">
 
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cabin&display=swap" rel="stylesheet">
@@ -23,27 +23,6 @@
     <!-- scripts -->
     <script src="js/moveList.js"></script>
     <script src="js/favorites.js"></script>
-    <style>
-    .move-name {
-    min-height: 3.5em;
-    /* Remove display:flex and align-items:center to allow stacking */
-    text-align: center;
-    }
-    .move-name-text {
-        display: block;
-        min-height: 3.5em; /* Reserve space for 2 lines */
-        text-align: center;
-        font-size: 1.1em;
-        margin-bottom: 0.2em;
-        word-break: break-word;
-    }
-    .fav-btn-row {
-        display: block;
-        text-align: center;
-        margin: 0.3em 0 0.5em 0;
-        min-height: 1.7em; /* Reserve space for the star */
-    }
-</style>
 </head>
 
 <body>
@@ -130,11 +109,11 @@
         </div>
     </div>
 
-    <div class="container">
-        <footer class="pt-3 mt-4 sticky-bottom">
-            <p class="text-center text-body-secondary">Version: 1.0 - 06/2025</p>
-        </footer>
-    </div>
+    <!-- Pied de page dynamique -->
+<footer style="text-align:center;margin-top:2em;font-size:0.9em;color:#888;">
+    Version : <span class="site-version"></span> | Date : <span class="site-date"></span>
+</footer>
+<script src="js/version.js"></script>
 
     <!-- Modal HTML -->
 <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
@@ -169,22 +148,23 @@
         </script>
     <script>
 // Save the original random functions
-const originalRandomOhMove = randomOhMove;
-const originalRandomThMove = randomThMove;
-const originalRandomAerial = randomAerial;
+//const originalRandomOhMove = randomOhMove;
+//const originalRandomThMove = randomThMove;
+//const originalRandomAerial = randomAerial;
 
 function getFilteredRandomMove(list, difficulty) {
     if (difficulty === 'all') return list[Math.floor(Math.random() * list.length)];
-    const filtered = list.filter(move => move.move.toLowerCase().includes(difficulty));
-    if (filtered.length === 0) return list[Math.floor(Math.random() * list.length)];
+    // Recherche stricte du mot-clé difficulty dans le nom du move
+    const filtered = list.filter(move => move.move.toLowerCase().includes(difficulty.toLowerCase()));
+    if (filtered.length === 0) return null;
     return filtered[Math.floor(Math.random() * filtered.length)];
 }
 
 function getNewMovesFiltered() {
     const difficulty = document.getElementById('difficultyFilter').value;
-    displayMove('one-handed', getFilteredRandomMove(one_hand, difficulty));
-    displayMove('two-handed', getFilteredRandomMove(two_hand, difficulty));
-    displayMove('aerial', getFilteredRandomMove(aerial, difficulty));
+    displayMove('one-handed', getFilteredRandomMove(one_hand, difficulty), difficulty);
+    displayMove('two-handed', getFilteredRandomMove(two_hand, difficulty), difficulty);
+    displayMove('aerial', getFilteredRandomMove(aerial, difficulty), difficulty);
 }
 
 document.getElementById('applyFilter').onclick = getNewMovesFiltered;

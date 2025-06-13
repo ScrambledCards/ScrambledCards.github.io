@@ -1,9 +1,20 @@
 // Function to display a move in a specific section
-function displayMove(sectionId, move) {
+function displayMove(sectionId, move, difficulty) {
     const moveContainer = document.getElementById(sectionId + '-move');
     const favorites = getFavoriteMoves();
-    const isFavorite = favorites.includes(String(move.id));
+    const isFavorite = move && move.id && favorites.includes(String(move.id));
     const starChar = isFavorite ? '★' : '☆';
+
+    if (!move) {
+        if (sectionId === 'aerial' && difficulty === 'advanced') {
+            moveContainer.innerHTML = `<span class="move-name-text">No advanced aerials right now.<br>Feel free to submit some on our <a href='https://discord.gg/R2FzpY6' target='_blank'>discord</a>!</span>`;
+            document.getElementById(sectionId + '-video').innerHTML = '';
+            return;
+        }
+        moveContainer.innerHTML = `<span class="move-name-text">No move found.</span>`;
+        document.getElementById(sectionId + '-video').innerHTML = '';
+        return;
+    }
 
     moveContainer.innerHTML = `
         <span class="move-name-text">${move.move}</span>
@@ -38,5 +49,16 @@ function getNewMoves() {
     displayMove('aerial', randomAerial());
 }
 
-// Initial load of moves on page load
-getNewMoves();
+function getFilteredRandomMove(list, difficulty) {
+    if (difficulty === 'all') return list[Math.floor(Math.random() * list.length)];
+    const filtered = list.filter(move => move.move.toLowerCase().includes(difficulty));
+    if (filtered.length === 0) return null;
+    return filtered[Math.floor(Math.random() * filtered.length)];
+}
+
+function getNewMovesFiltered() {
+    const difficulty = document.getElementById('difficultyFilter').value;
+    displayMove('one-handed', getFilteredRandomMove(one_hand, difficulty), difficulty);
+    displayMove('two-handed', getFilteredRandomMove(two_hand, difficulty), difficulty);
+    displayMove('aerial', getFilteredRandomMove(aerial, difficulty), difficulty);
+}

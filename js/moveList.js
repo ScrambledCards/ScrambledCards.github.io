@@ -925,3 +925,8 @@ const moveList = [
     { title: "Two Handed", list: two_hand },
     { title: "Aerial", list: aerial },
 ]
+
+function clearFavorites() {
+    localStorage.removeItem('favoriteMoves');
+    location.reload();
+}

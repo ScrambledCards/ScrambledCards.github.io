@@ -2,7 +2,7 @@ const favoritesKey = 'favoriteMoves';
 
 // Function to add a move to favorites
 function addToFavorites(moveId) {
-    let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+    let favorites = JSON.parse(localStorage.getItem(favoritesKey)) ?? [];
     moveId = String(moveId);
     if (!favorites.includes(moveId)) {
         favorites.push(moveId);
@@ -12,7 +12,7 @@ function addToFavorites(moveId) {
 
 // Function to remove a move from favorites
 function removeFromFavorites(moveId) {
-    let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+    let favorites = JSON.parse(localStorage.getItem(favoritesKey)) ?? [];
     moveId = String(moveId);
     favorites = favorites.filter(id => id != moveId);
     localStorage.setItem(favoritesKey, JSON.stringify(favorites));
@@ -20,7 +20,7 @@ function removeFromFavorites(moveId) {
 
 // Function to get favorite moves
 function getFavoriteMoves() {
-    return (JSON.parse(localStorage.getItem(favoritesKey)) || []).map(String);
+    return (JSON.parse(localStorage.getItem(favoritesKey)) ?? []).map(String);
 }
 
 // Function to display favorite moves on the favorites page
@@ -30,7 +30,7 @@ function displayFavoriteMoves() {
     favoritesContainer.innerHTML = ''; // Clear previous list
 
     favoriteMoves.forEach(moveId => {
-        const move = one_hand.find(m => String(m.id) == moveId) || two_hand.find(m => String(m.id) == moveId) || aerial.find(m => String(m.id) == moveId);
+        const move = one_hand.find(m => String(m.id) == moveId) ?? two_hand.find(m => String(m.id) == moveId) ?? aerial.find(m => String(m.id) == moveId);
         if (move) {
             const listItem = document.createElement('li');
             listItem.style.margin = "10px";
