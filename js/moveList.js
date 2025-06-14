@@ -1,6 +1,6 @@
 //une main
 const one_hand = [
-    //easy
+    //beginner
     {
         id: 1,
         move: "Charlier Triangle (beginner)",
@@ -176,12 +176,12 @@ const one_hand = [
     },
     {
         id: 31,
-        move: "Bonsai Cut by James Chesmore (easy)",
+        move: "Bonsai Cut by James Chesmore (beginner)",
         link: "XREQhRHrqqY"
     },
     {
         id: 32,
-        move: "Charlier Cut (easy)",
+        move: "Charlier Cut (beginner)",
         link: "YdBdW0OlLpQ"
     },
     {
@@ -191,12 +191,12 @@ const one_hand = [
     },
     {
         id: 34,
-        move: "Fang by Teo Chun Chieh (easy)",
+        move: "Fang by Teo Chun Chieh (beginner)",
         link: "upZ0wGj13wY"
     },
     {
         id: 35,
-        move: "Feldspar by Beckett Behel (easy)",
+        move: "Feldspar by Beckett Behel (beginner)",
         link: "YuwUPR-SrzA"
     },
     {
@@ -211,7 +211,7 @@ const one_hand = [
     },
     {
         id: 38,
-        move: "Kiwi by Carl Karlsson (easy)",
+        move: "Kiwi by Carl Karlsson (beginner)",
         link: "jAtL1Za-cdI"
     },
     {
@@ -221,12 +221,12 @@ const one_hand = [
     },
     {
         id: 40,
-        move: "Reverlution by Duy (easy)",
+        move: "Reverlution by Duy (beginner)",
         link: "pO91x4-jsOM"
     },
     {
         id: 41,
-        move: "Revolution Cut (easy)",
+        move: "Revolution Cut (beginner)",
         link: "YWUHUFNR2Tc"
     },
     {
@@ -236,7 +236,7 @@ const one_hand = [
     },
     {
         id: 43,
-        move: "Scissor Cut (easy)",
+        move: "Scissor Cut (beginner)",
         link: "1E0n6kamKFo"
     },
     {
@@ -256,7 +256,7 @@ const one_hand = [
     },
     {
         id: 47,
-        move: "Whisk by Sebastian Goh (easy)",
+        move: "Whisk by Sebastian Goh (beginner)",
         link: "D20InPy8vwM"
     }
 
@@ -694,12 +694,12 @@ const two_hand = [
     },
     {
         id: 119,
-        move: "Raptor by Dan and Dave Buck (easy)",
+        move: "Raptor by Dan and Dave Buck (beginner)",
         link: "KMUVnMTmZQc"
     },
     {
         id: 120,
-        move: "3Pac Shakur by Chris Ramsey (easy)",
+        move: "3Pac Shakur by Chris Ramsey (beginner)",
         link: "AgsIfxtVjkk"
     },
     {
@@ -734,7 +734,7 @@ const two_hand = [
     },
     {
         id: 127,
-        move: "Aquila by Kaitlyn Chen (easy)",
+        move: "Aquila by Kaitlyn Chen (beginner)",
         link: "IEu8lTdDAu0"
     },
     //{
@@ -744,12 +744,12 @@ const two_hand = [
     //},
     {
         id: 129,
-        move: "Ballad (easy)",
+        move: "Ballad (beginner)",
         link: "LuIe4kiUA9M"
     },
     {
         id: 130,
-        move: "Bap by Nguyen Hoang Duy (easy)",
+        move: "Bap by Nguyen Hoang Duy (beginner)",
         link: "qmwfLHVUJOE"
     },
     {
@@ -885,12 +885,12 @@ const aerial = [
     },
     {
         id: 155,
-        move: "Biddle Flip (easy)",
+        move: "Biddle Flip (beginner)",
         link: "ptl5JNfcDkw"
     },
     {
         id: 156,
-        move: "Deck Flip by T.G. Murphy (easy)",
+        move: "Deck Flip by T.G. Murphy (beginner)",
         link: "DFIf1ZC1lY4"
     },
     {
@@ -900,17 +900,17 @@ const aerial = [
     },
     {
         id: 158,
-        move: "Instant Replay by Paul Harris (easy)",
+        move: "Instant Replay by Paul Harris (beginner)",
         link: "Ul4Kc9ZOUOY"
     },
     {
         id: 159,
-        move: "Long Dist. Spinner by Audley V. Walsh (easy)",
+        move: "Long Dist. Spinner by Audley V. Walsh (beginner)",
         link: "janqHU5Ydo0"
     },
     {
         id: 160,
-        move: "Air cut by wcklx (easy)",
+        move: "Air cut by wcklx (beginner)",
         link: "HzCSv1llwuI"
     },
     
