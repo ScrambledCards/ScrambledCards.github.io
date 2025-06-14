@@ -378,11 +378,11 @@ const two_hand = [
         move: "Pearl by Evan Alberto (beginner)",
         link: "eqDwzoML1gc"
     },
-    {
-        id: 68,
-        move: "Reversed under pressure by Birger Karlsson (beginner)",
-        link: "cb07WZdiKUs"
-    },
+    //{
+    //    id: 68,
+    //    move: "Reversed under pressure by Birger Karlsson (beginner)",
+    //    link: "cb07WZdiKUs"
+    //},
     //	{
     //		move: "Molecule Cut by Dan and Dave Buck",
     //		link: null
