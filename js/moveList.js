@@ -8,7 +8,7 @@ const one_hand = [
     },
     {
         id: 2,
-        move: "Flop by Daniel Lin (beginner)",
+        move: "Flop by Daniel Lin (intermediate)",
         link: "A5TscR-_hvM"
     },
     {
@@ -196,7 +196,7 @@ const one_hand = [
     },
     {
         id: 35,
-        move: "Feldspar by Beckett Behel (beginner)",
+        move: "Feldspar by Beckett Behel (intermediate)",
         link: "YuwUPR-SrzA"
     },
     {
