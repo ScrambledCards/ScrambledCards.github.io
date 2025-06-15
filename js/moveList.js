@@ -96,10 +96,10 @@ const one_hand = [
         move: "OH Shuffle by Jerry Cestkowski (intermediate)",
         link: "TlfbxprcyMo"
     },
-    //	{
-    //		move: "OHW by Birger Karlsson",
-    //		link: "NMY4AXUMGwg"
-    //	},
+	{
+    	move: "OHW by Birger Karlsson",
+    	link: "NMY4AXUMGwg"
+	},
     {
         id: 19,
         move: "Retrigger by Oliver Sogard (intermediate)",
@@ -378,11 +378,11 @@ const two_hand = [
         move: "Pearl by Evan Alberto (beginner)",
         link: "eqDwzoML1gc"
     },
-    //{
-    //    id: 68,
-    //    move: "Reversed under pressure by Birger Karlsson (beginner)",
-    //    link: "cb07WZdiKUs"
-    //},
+    {
+        id: 68,
+        move: "Reversed under pressure by Birger Karlsson (beginner)",
+        link: "cb07WZdiKUs"
+    },
     //	{
     //		move: "Molecule Cut by Dan and Dave Buck",
     //		link: null
