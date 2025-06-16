@@ -222,16 +222,15 @@ footer {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition-delay: 30ms;
   transition: width 0.35s, height 0.35s, border-radius 0.35s;
   z-index: 1002;
   overflow: visible;
 }
 #floating-panel-fab.morphing {
   width: 33vw;
-  min-width: 320px;
-  max-width: 98vw;
-  height: auto;
   min-height: 220px;
+  height: 30vh;
   border-radius: 18px;
   align-items: flex-start;
   justify-content: flex-start;
