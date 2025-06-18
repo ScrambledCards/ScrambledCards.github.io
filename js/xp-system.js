@@ -247,4 +247,244 @@
             { text: `Do a combo with: ${comboMoves.join(', ')}`, xp: randomXP() }
         ];
     };
+    // --- Pomodoro morphing panel (bottom left) ---
+    document.addEventListener('DOMContentLoaded', function () {
+        // FAB (bouton flottant)
+        if (!document.getElementById('pomodoro-fab')) {
+            const fab = document.createElement('div');
+            fab.id = 'pomodoro-fab';
+            fab.innerHTML = '<span class="pomodoro-fab-icon" style="font-size:1.7em;">🍅</span>';
+            fab.style.position = 'fixed';
+            fab.style.left = '32px';
+            fab.style.bottom = '32px';
+            fab.style.width = '56px';
+            fab.style.height = '56px';
+            fab.style.background = '#23272b';
+            fab.style.color = '#fff';
+            fab.style.borderRadius = '50%';
+            fab.style.boxShadow = '0 2px 12px #0006';
+            fab.style.display = 'flex';
+            fab.style.alignItems = 'center';
+            fab.style.justifyContent = 'center';
+            fab.style.zIndex = 9999;
+            fab.style.cursor = 'pointer';
+            fab.style.userSelect = 'none';
+            fab.style.transition = 'all 0.35s cubic-bezier(.4,2,.6,1)';
+            document.body.appendChild(fab);
+        }
+        const fab = document.getElementById('pomodoro-fab');
+        function showPomodoroPanel() {
+            if (document.getElementById('pomodoro-panel')) return;
+            const panel = document.createElement('div');
+            panel.id = 'pomodoro-panel';
+            panel.innerHTML = `
+                <div id="pomodoro-header" style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-weight:bold;">🍅 Pomodoro</span>
+                    <button id="pomodoro-close" style="background:none;border:none;font-size:1.2em;cursor:pointer;">✕</button>
+                </div>
+                <div id="pomodoro-timer" style="font-size:2em;text-align:center;margin:0.3em 0;">25:00</div>
+                <div style="display:flex;gap:0.5em;justify-content:center;">
+                    <button id="pomodoro-startpause" class="btn btn-success btn-sm" type="button">Start</button>
+                    <button id="pomodoro-reset" class="btn btn-danger btn-sm" type="button">Reset</button>
+                </div>
+            `;
+            panel.style.position = 'fixed';
+            panel.style.left = '32px';
+            panel.style.bottom = '32px';
+            panel.style.background = '#23272b';
+            panel.style.color = '#fff';
+            panel.style.borderRadius = '14px';
+            panel.style.boxShadow = '0 2px 12px #0006';
+            panel.style.padding = '1em 1.2em 1em 1.2em';
+            panel.style.zIndex = 9999;
+            panel.style.minWidth = '180px';
+            panel.style.userSelect = 'none';
+            panel.style.fontFamily = 'inherit';
+            panel.style.transition = 'all 0.35s cubic-bezier(.4,2,.6,1)';
+            document.body.appendChild(panel);
+            fab.style.opacity = '0';
+            setTimeout(() => { fab.style.display = 'none'; }, 350);
+
+            // Pomodoro timer logic (refactored, only 2 buttons)
+            const DURATION = 25 * 60; // 25 min
+            let interval = null;
+            function getState() {
+                return JSON.parse(localStorage.getItem('pomodoroState') || '{}');
+            }
+            function saveState(state) {
+                localStorage.setItem('pomodoroState', JSON.stringify(state));
+            }
+            function clearState() {
+                localStorage.removeItem('pomodoroState');
+            }
+            function updateDisplay(secs) {
+                const m = Math.floor(secs / 60).toString().padStart(2, '0');
+                const s = (secs % 60).toString().padStart(2, '0');
+                document.getElementById('pomodoro-timer').textContent = `${m}:${s}`;
+            }
+            function updateStartPauseButton(state) {
+                const btn = document.getElementById('pomodoro-startpause');
+                if (!state.startTime) {
+                    btn.textContent = 'Start';
+                    btn.classList.remove('btn-warning');
+                    btn.classList.add('btn-success');
+                } else if (state.paused) {
+                    btn.textContent = 'Play';
+                    btn.classList.remove('btn-warning');
+                    btn.classList.add('btn-success');
+                } else {
+                    btn.textContent = 'Pause';
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-warning');
+                }
+            }
+            function startTimer() {
+                let state = getState();
+                if (!state.startTime) {
+                    // Premier démarrage
+                    state.startTime = Date.now();
+                    state.paused = false;
+                    state.elapsed = 0;
+                } else if (state.paused) {
+                    // Reprise après pause
+                    state.startTime = Date.now() - (state.elapsed * 1000);
+                    state.paused = false;
+                }
+                saveState(state);
+                updateStartPauseButton(state);
+                if (interval) clearInterval(interval);
+                let st = getState();
+                let elapsed = Math.floor((Date.now() - st.startTime) / 1000);
+                updateDisplay(Math.max(0, DURATION - elapsed));
+                interval = setInterval(() => {
+                    let st = getState();
+                    let elapsed = Math.floor((Date.now() - st.startTime) / 1000);
+                    if (elapsed >= DURATION) {
+                        updateDisplay(0);
+                        clearInterval(interval);
+                        clearState();
+                        alert('Pomodoro finished!');
+                        updateStartPauseButton({});
+                    } else {
+                        updateDisplay(DURATION - elapsed);
+                        st.elapsed = elapsed;
+                        saveState(st);
+                    }
+                }, 1000);
+                panel._pomodoroInterval = interval;
+            }
+            function pauseTimer() {
+                let state = getState();
+                if (!state.paused) {
+                    state.paused = true;
+                    state.elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+                    saveState(state);
+                    // Sauvegarde la date et l'heure de la pause
+                    localStorage.setItem('pomodoroPauseInfo', JSON.stringify({
+                        pausedAt: Date.now(),
+                        elapsed: state.elapsed,
+                        startTime: state.startTime
+                    }));
+                }
+                updateStartPauseButton(state);
+                if (interval) clearInterval(interval);
+            }
+            // Restore state on load
+            (function restore() {
+                let state = getState();
+                let pauseInfo = null;
+                try { pauseInfo = JSON.parse(localStorage.getItem('pomodoroPauseInfo') || 'null'); } catch {}
+                let now = Date.now();
+                if (pauseInfo && pauseInfo.pausedAt && (now - pauseInfo.pausedAt < 3600 * 1000)) {
+                    // Pause récente (<1h) : priorité à la pause
+                    let elapsed = pauseInfo.elapsed || 0;
+                    updateDisplay(DURATION - elapsed);
+                    updateStartPauseButton({paused:true,startTime:pauseInfo.startTime});
+                    // On restaure l'état de pause
+                    saveState({startTime:pauseInfo.startTime, paused:true, elapsed:elapsed});
+                    return;
+                } else {
+                    // Si la pause date de plus d'une heure, on l'efface
+                    localStorage.removeItem('pomodoroPauseInfo');
+                }
+                if (state.startTime) {
+                    let elapsed = state.paused
+                        ? (state.elapsed || 0)
+                        : Math.floor((Date.now() - state.startTime) / 1000);
+                    if (elapsed < DURATION) {
+                        updateDisplay(DURATION - elapsed);
+                        updateStartPauseButton(state);
+                        if (!state.paused) startTimer();
+                    } else {
+                        updateDisplay(DURATION);
+                        clearState();
+                        updateStartPauseButton({});
+                    }
+                } else {
+                    updateDisplay(DURATION);
+                    updateStartPauseButton({});
+                }
+            })();
+            // Nettoyage de la pause si on relance ou reset
+            function clearPauseInfo() {
+                localStorage.removeItem('pomodoroPauseInfo');
+            }
+            document.getElementById('pomodoro-startpause').addEventListener('click', function() {
+                let state = getState();
+                let pauseInfo = null;
+                try { pauseInfo = JSON.parse(localStorage.getItem('pomodoroPauseInfo') || 'null'); } catch {}
+                if (!state.startTime) {
+                    clearPauseInfo();
+                    startTimer();
+                } else if (state.paused) {
+                    // Reprise après pause : recalculer startTime à partir de elapsed
+                    let elapsed = state.elapsed || (pauseInfo && pauseInfo.elapsed) || 0;
+                    let startTime = Date.now() - (elapsed * 1000);
+                    let newState = {startTime: startTime, paused: false, elapsed: elapsed};
+                    saveState(newState);
+                    clearPauseInfo();
+                    updateStartPauseButton(newState);
+                    if (interval) clearInterval(interval);
+                    // Redémarre le timer à la bonne valeur
+                    interval = setInterval(() => {
+                        let st = getState();
+                        let elapsed = Math.floor((Date.now() - st.startTime) / 1000);
+                        if (elapsed >= DURATION) {
+                            updateDisplay(0);
+                            clearInterval(interval);
+                            clearState();
+                            updateStartPauseButton({});
+                        } else {
+                            updateDisplay(DURATION - elapsed);
+                            st.elapsed = elapsed;
+                            saveState(st);
+                        }
+                    }, 1000);
+                    panel._pomodoroInterval = interval;
+                } else {
+                    pauseTimer();
+                }
+            });
+            // Ajout : fonction resetTimer bien définie dans le scope du panneau
+            function resetTimer() {
+                if (interval) clearInterval(interval);
+                clearState();
+                clearPauseInfo();
+                updateDisplay(DURATION);
+                updateStartPauseButton({});
+            }
+            document.getElementById('pomodoro-reset').addEventListener('click', resetTimer);
+            document.getElementById('pomodoro-close').addEventListener('click', function() {
+                if (panel._pomodoroInterval) clearInterval(panel._pomodoroInterval);
+                panel.remove();
+                fab.style.display = 'flex';
+                setTimeout(() => { fab.style.opacity = '1'; }, 10);
+            });
+        }
+        fab.onclick = showPomodoroPanel;
+        // Si le timer était déjà lancé, affiche le panneau au chargement
+        if (localStorage.getItem('pomodoroState')) {
+            showPomodoroPanel();
+        }
+    });
 })();
