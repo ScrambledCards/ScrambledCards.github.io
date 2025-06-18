@@ -6,6 +6,7 @@
     const XP_GROWTH = 1.15;
     const NB_LEVELS = 52;
     const STORAGE_KEY = 'xpSystemSimple';
+    const STORAGE_QUESTS_DONE_DATE = 'questsDoneDate'; // Clé pour la date des quêtes faites
     // --- State ---
     let state = {
         totalXP: 0,
@@ -82,12 +83,43 @@
         const logo = cardSVG(rank, suit);
         // Flamme SVG
         const flame = `<svg width="1.5em" height="1.5em" viewBox="0 0 32 32" style="vertical-align:middle;"><path d="M16 2C16 2 8 10 12 18C14 22 16 22 16 28C16 22 18 22 20 18C24 10 16 2 16 2Z" fill="#FFA726"/><ellipse cx="16" cy="24" rx="4" ry="6" fill="#FFD580"/></svg>`;
+        // Ajout d'une indication graphique de progression des niveaux (carreau, flèche, pique, flèche, coeur, flèche, trèfle)
+        function getProgressionIcons(level) {
+            // Ordre : carreau, flèche, pique, flèche, coeur, flèche, trèfle
+            const icons = [
+                '<span style="color:#E63946;font-size:1.3em;vertical-align:middle;">♦</span>',
+                '<span style="color:#888;font-size:1.1em;vertical-align:middle;">→</span>',
+                '<span style="color:#eee;font-size:1.3em;vertical-align:middle;">♠</span>',
+                '<span style="color:#888;font-size:1.1em;vertical-align:middle;">→</span>',
+                '<span style="color:#E63946;font-size:1.3em;vertical-align:middle;">♥</span>',
+                '<span style="color:#888;font-size:1.1em;vertical-align:middle;">→</span>',
+                '<span style="color:#eee;font-size:1.3em;vertical-align:middle;">♣</span>'
+            ];
+            // On met en surbrillance l'icône correspondant à la "famille" du niveau
+            const suitIdx = Math.floor(level / 13);
+            let out = '';
+            for (let i = 0; i < icons.length; i++) {
+                if (i % 2 === 0) {
+                    // Si c'est une famille
+                    if (i/2 === suitIdx) {
+                        out += icons[i].replace('font-size:1.3em;', 'font-size:1.5em;text-shadow:0 0 6px #FFD580;');
+                    } else {
+                        out += icons[i];
+                    }
+                } else {
+                    out += icons[i];
+                }
+            }
+            return out;
+        }
         container.innerHTML = `
         <div class="xp-bar-sticky" style="display:flex;align-items:center;gap:1em;">
             <div class="xp-bar-logo">${logo}</div>
             <div style="flex:1;">
                 <div class="xp-bar-label" style="display:flex;align-items:center;justify-content:space-between;gap:1em;">
-                    <span>XP : ${state.totalXP} / ${prevTotal+nextXP} &nbsp; | &nbsp; Niveau : ${state.level+1} / ${NB_LEVELS}</span>
+                    <span>XP : ${state.totalXP} / ${prevTotal+nextXP} &nbsp; | &nbsp; Level : ${state.level+1} / ${NB_LEVELS}
+                        <span style="margin-left:1em;">${getProgressionIcons(state.level)}</span>
+                    </span>
                     <span class="xp-bar-streak" style="font-size:1.1em;display:flex;align-items:center;gap:0.3em;"><span aria-label="streak" title="Streak">🔥</span><span style="font-weight:bold;">${state.streak}</span></span>
                 </div>
                 <div class="xp-bar-track">
@@ -116,6 +148,25 @@
             renderXPBar();
         }
     };
+    // Pénalité : -25 XP cumulés par jour sans quêtes faites, si absence >= 2 jours
+    function applyMissedDaysPenalty() {
+        const lastDone = localStorage.getItem(STORAGE_QUESTS_DONE_DATE);
+        if (!lastDone) return;
+        const last = new Date(lastDone);
+        const today = new Date();
+        // On ignore l'heure pour le calcul du nombre de jours
+        last.setHours(0,0,0,0);
+        today.setHours(0,0,0,0);
+        const diffDays = Math.floor((today - last) / (1000*60*60*24));
+        if (diffDays >= 2) {
+            let cumul = loadCumulXP();
+            let penalty = 25 * (diffDays - 1); // -1 car le 1er jour sans quêtes n'est pas pénalisé
+            cumul = Math.max(0, cumul - penalty);
+            saveCumulXP(cumul);
+        }
+    }
+    // Appliquer la pénalité au chargement de la page (avant calcul XP)
+    applyMissedDaysPenalty();
     // --- Initialisation ---
     loadState();
     window.addEventListener('DOMContentLoaded', function() {
