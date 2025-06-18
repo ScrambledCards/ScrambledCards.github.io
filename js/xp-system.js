@@ -225,12 +225,8 @@
         }
         const MOVE_LIST = getMoveNames();
         function pickMove(usedMoves = new Set()) {
-            let m;
-            do {
-                m = MOVE_LIST[Math.floor(rand() * MOVE_LIST.length)];
-            } while (usedMoves.has(m));
-            usedMoves.add(m);
-            return m;
+            const filtered  = MOVE_LIST.filter(x => !usedMoves.has(x));
+            return filtered[Math.floor(rand() * filtered.length)];
         }
         // Génère 2 quêtes "learn"
         let used = new Set();
