@@ -165,6 +165,14 @@
             saveCumulXP(cumul);
         }
     }
+    // Correction : déclaration explicite de loadCumulXP pour la pénalité et le calcul XP
+    function loadCumulXP() {
+        return Number(localStorage.getItem('xpSystemSimpleCumul')) || 0;
+    }
+    // Correction : déclaration explicite de saveCumulXP pour la pénalité et le calcul XP
+    function saveCumulXP(xp) {
+        localStorage.setItem('xpSystemSimpleCumul', xp);
+    }
     // Appliquer la pénalité au chargement de la page (avant calcul XP)
     applyMissedDaysPenalty();
     // --- Initialisation ---
@@ -174,8 +182,8 @@
         renderXPBar();
     });
     // Pour test manuel : window.gainXP = function(x) { state.totalXP += x; saveState(); renderXPBar(); }
-    window.gainXP = function(x) {
-        state.totalXP += x;
+    window.gainXP = function(xp) {
+        state.totalXP += xp;
         saveState();
         renderXPBar();
     };
