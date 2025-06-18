@@ -27,6 +27,9 @@ function getFavoriteMoves() {
 function displayFavoriteMoves() {
     const favoriteMoves = getFavoriteMoves();
     const favoritesContainer = document.getElementById('favorites-list');
+    if (favoritesContainer == null) {
+        return;
+    }
     favoritesContainer.innerHTML = ''; // Clear previous list
 
     favoriteMoves.forEach(moveId => {

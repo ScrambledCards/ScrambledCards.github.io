@@ -8,6 +8,73 @@
 	--bs-dark: #343A40;
 }
 
+html, body {
+  height: 100%;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+#main-content {
+  flex: 1 0 auto;
+}
+footer {
+  margin-top: auto !important;
+  width: 100%;
+}
+
+/* XP bar intégrée dans la page, juste au-dessus du footer */
+#xp-bar-container {
+  width: 100%;
+  max-width: 100vw;
+  position: static;
+  left: unset;
+  bottom: unset;
+  z-index: unset;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+}
+.xp-bar-sticky {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: none;
+  padding: 0.5em 0.7em 0.3em 0.7em;
+  pointer-events: auto;
+  border-radius: 10px 10px 0 0;
+}
+.xp-bar-label {
+  color: #eee;
+  font-size: 1em;
+  text-align: center;
+  margin-bottom: 0.2em;
+}
+.xp-bar-track {
+  width: 100%;
+  height: 12px;
+  background: #181a1b;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #5A9, #28A745);
+  transition: width 0.5s;
+}
+@media (max-width: 650px) {
+  .xp-bar-sticky {
+    max-width: 98vw;
+    border-radius: 8px 8px 0 0;
+    padding: 0.4em 0.2em 0.2em 0.2em;
+  }
+}
+@media (max-width: 600px) {
+  .xp-bar-label { font-size: 0.95em; }
+}
+
+/* Move name and favorite button styles */
 .move-name {
     min-height: 3.5em;
     /* Remove display:flex and align-items:center to allow stacking */
@@ -27,3 +94,216 @@
     margin: 0.3em 0 0.5em 0;
     min-height: 1.7em; /* Reserve space for the star */
 }
+
+/* Responsive combo list for combo-generator.html */
+@media (max-width: 600px) {
+  #combo-list {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  #combo-list .combo-move {
+    min-width: 0 !important;
+    width: 100% !important;
+    display: block !important;
+    text-align: left;
+    margin-bottom: 0.5em;
+  }
+}
+
+/* Floating Action Button for Quests */
+#xp-quests-fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  left: auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #23272b;
+  color: #fff;
+  box-shadow: 0 2px 16px #000a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: width 0.35s cubic-bezier(.4,2,.6,1), height 0.35s cubic-bezier(.4,2,.6,1), border-radius 0.35s, background 0.35s;
+  z-index: 1002;
+  overflow: visible;
+}
+#xp-quests-fab.morphing {
+  width: 320px;
+  max-width: 98vw;
+  height: 220px;
+  border-radius: 18px;
+  background: #23272b;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 16px #000a;
+  cursor: default;
+  right: 32px;
+  left: auto;
+}
+#xp-quests-panel,
+#xp-quests-fab.morphing #xp-quests-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 220px;
+  min-height: 120px;
+  max-width: 100%;
+  background: rgba(35,39,43,0.98);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  opacity: 1;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px #000a;
+  transition: opacity 0.3s;
+  z-index: 1;
+}
+#xp-quests-panel .panel-content {
+  width: 90%;
+  margin: 0 auto;
+  color: #fff;
+  text-align: left;
+  font-size: 1rem;
+  max-height: 85%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+#xp-quests-panel .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 1.5rem;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+#xp-quests-panel .close-btn:hover {
+  opacity: 1;
+}
+@media (max-width: 600px) {
+  #xp-quests-fab,
+  #xp-quests-fab.morphing {
+    width: 98vw;
+    min-width: 0;
+    left: 1vw !important;
+    right: 1vw !important;
+    bottom: 16px;
+    max-width: 98vw;
+  }
+  #xp-quests-panel .panel-content {
+    font-size: 0.95rem;
+  }
+}
+
+/* --- Floating morphing panel CLEAN and SYNCHRONIZED --- */
+#floating-panel-fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #23272b;
+  color: #fff;
+  box-shadow: 0 2px 16px #000a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition-delay: 30ms;
+  transition: width 0.35s, height 0.35s, border-radius 0.35s;
+  z-index: 1002;
+  overflow: visible;
+}
+#floating-panel-fab.morphing {
+  width: 33vw;
+  min-height: 220px;
+  height: 30vh;
+  border-radius: 18px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  cursor: default;
+}
+#floating-panel-fab .fab-icon {
+  font-size: 2rem;
+  transition: opacity 0.2s;
+}
+#floating-panel-fab.morphing .fab-icon {
+  opacity: 0;
+  pointer-events: none;
+}
+#floating-panel {
+  display: none;
+}
+#floating-panel-fab.morphing #floating-panel {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #23272b00;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0);
+  padding: 2em 1.5em 1.5em 1.5em;
+  color: #fff;
+  overflow-y: auto;
+}
+#floating-panel .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 1.5rem;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+#floating-panel .close-btn:hover {
+  opacity: 1;
+}
+#floating-panel .panel-content {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  color: #fff;
+  text-align: left;
+  font-size: 1rem;
+  max-height: none;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  word-break: break-word;
+  box-sizing: border-box;
+  white-space: normal;
+}
+@media (max-width: 900px) {
+  #floating-panel-fab.morphing {
+    width: 98vw;
+    min-width: 0;
+    max-width: 98vw;
+    left: 1vw !important;
+    right: 1vw !important;
+    bottom: 16px;
+  }
+  #floating-panel .panel-content {
+    font-size: 0.95rem;
+    padding: 1em 0.5em;
+    max-width: 96vw;
+  }
+}
+/* --- End floating morphing panel clean --- */
