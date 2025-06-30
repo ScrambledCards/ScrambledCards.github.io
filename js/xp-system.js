@@ -48,7 +48,7 @@
         const prevTotal = totalXpForLevel(state.level);
         const progress = Math.min(1, (state.totalXP - prevTotal) / nextXP);
         // Logo du palier (exemple : symbole carte + numéro ou lettre)
-        const cardRanks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'As'];
+        const cardRanks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         const cardSuits = ['♦', '♠', '♥', '♣'];
         const rank = cardRanks[state.level % 13];
         const suit = cardSuits[Math.floor(state.level / 13) % 4];
@@ -130,23 +130,40 @@
     }
     // --- Gestion streak : reset si aucune quête faite dans les dernières 24h ---
     window.checkStreakReset = function() {
-        function getTodayStr() {
-            const d = new Date();
-            return d.getFullYear() + '-' + (d.getMonth()+1).toString().padStart(2,'0') + '-' + d.getDate().toString().padStart(2,'0');
+    function getTodayStr() {
+        const d = new Date();
+        return d.getFullYear() + '-' + (d.getMonth()+1).toString().padStart(2,'0') + '-' + d.getDate().toString().padStart(2,'0');
+    }
+    function getYesterdayStr() {
+        const d = new Date();
+        d.setDate(d.getDate() - 1);
+        return d.getFullYear() + '-' + (d.getMonth()+1).toString().padStart(2,'0') + '-' + d.getDate().toString().padStart(2,'0');
+    }
+    const today = getTodayStr();
+    const yesterday = getYesterdayStr();
+    // Vérifie si l'utilisateur a déjà fait des quêtes au moins une fois
+    let hasEverDoneQuests = false;
+    for (let i = 0; i < 365; i++) { // regarde sur 1 an max
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const key = 'questsDone-' + d.getFullYear() + '-' + (d.getMonth()+1).toString().padStart(2,'0') + '-' + d.getDate().toString().padStart(2,'0');
+        if (localStorage.getItem(key)) {
+            hasEverDoneQuests = true;
+            break;
         }
-        function getYesterdayStr() {
-            const d = new Date();
-            d.setDate(d.getDate() - 1);
-            return d.getFullYear() + '-' + (d.getMonth()+1).toString().padStart(2,'0') + '-' + d.getDate().toString().padStart(2,'0');
-        }
-        const today = getTodayStr();
-        const yesterday = getYesterdayStr();
-        if (state.streak > 0 && !localStorage.getItem('questsDone-' + yesterday)) {
-            state.streak = 0;
-            state.totalXP = Math.max(0, state.totalXP - 25);
-            saveState();
-            renderXPBar();
-        }
+    }
+    // Ne pénalise que si l'utilisateur a déjà fait des quêtes au moins une fois
+    if (
+        hasEverDoneQuests &&
+        state.streak > 0 &&
+        !localStorage.getItem('questsDone-' + yesterday) &&
+        !localStorage.getItem('questsDone-' + today)
+    ) {
+        state.streak = 0;
+        state.totalXP = Math.max(0, state.totalXP - 25);
+        saveState();
+        renderXPBar();
+    }
     };
     // Pénalité : -25 XP cumulés par jour sans quêtes faites, si absence >= 2 jours
     function applyMissedDaysPenalty() {
@@ -214,6 +231,23 @@
         // fallback
         return ["Charlier Cut", "Sybil", "Revolution Cut"];
     }
+    function getMoveDifficulty(moveName) {
+    const name = moveName.toLowerCase();
+    if (name.includes('hard') || name.includes('advanced')) return 'hard';
+    if (name.includes('intermediate') || name.includes('medium')) return 'intermediate';
+    if (name.includes('easy') || name.includes('beginner')) return 'easy';
+    // fallback : si rien trouvé, on considère "intermediate"
+    return 'intermediate';
+    }
+
+    // XP selon la difficulté
+    function xpForMove(moveName) {
+        const diff = getMoveDifficulty(moveName);
+        if (diff === 'easy') return 25;
+        if (diff === 'intermediate') return 40;
+        if (diff === 'hard') return 70;
+        return 40;
+    }
     // Génère 3 quêtes du jour dynamiques (2 learn, 1 combo 2-4 moves), XP entre 20 et 70
     window.getDailyQuests = function() {
         const d = new Date();
@@ -228,20 +262,43 @@
             const filtered  = MOVE_LIST.filter(x => !usedMoves.has(x));
             return filtered[Math.floor(rand() * filtered.length)];
         }
-        // Génère 2 quêtes "learn"
+        // Génère 1 quête "learn"
         let used = new Set();
-        const learn1 = pickMove(used);
+    const learn1 = pickMove(used);
+
+    // Détermine si on met une quête Pomodoro (1 jour sur 3)
+    const pomodoroDay = (seed % 3 === 0);
+    let quest2;
+    if (pomodoroDay) {
+        // Quête Pomodoro
+        const sessions = 1 + Math.floor(rand() * 3); // 1 à 3 sessions
+        quest2 = {
+            text: `Do ${sessions} training session${sessions > 1 ? 's' : ''} (timer)`,
+            xp: sessions * 30,
+            pomodoroSessions: sessions // Pour suivi éventuel
+        };
+    } else {
+        // Quête "learn" classique
         const learn2 = pickMove(used);
-        // Génère une quête combo de 2 à 4 moves
-        const comboLength = 2 + Math.floor(rand() * 3); // 2, 3 ou 4
-        const comboMoves = [];
-        for (let i = 0; i < comboLength; i++) comboMoves.push(pickMove(used));
-        function randomXP() { return 20 + Math.floor(rand() * 51); } // 20 à 70 inclus
-        return [
-            { text: `Learn the move: ${learn1}`, xp: randomXP() },
-            { text: `Learn the move: ${learn2}`, xp: randomXP() },
-            { text: `Do a combo with: ${comboMoves.join(', ')}`, xp: randomXP() }
-        ];
+        quest2 = {
+            text: `Learn the move: ${learn2}`,
+            xp: xpForMove(learn2)
+        };
+    }
+    // Génère une quête combo de 2 à 4 moves
+    const comboLength = 2 + Math.floor(rand() * 3); // 2, 3 ou 4
+    const comboMoves = [];
+    let comboXP = 0;
+    for (let i = 0; i < comboLength; i++) {
+        const move = pickMove(used);
+        comboMoves.push(move);
+        comboXP += xpForMove(move);
+    }
+    return [
+        { text: `Learn the move: ${learn1}`, xp: xpForMove(learn1) },
+        quest2,
+        { text: `Do a combo with: ${comboMoves.join(', ')}`, xp: comboXP }
+    ];
     };
     // --- Pomodoro morphing panel (bottom left) ---
     document.addEventListener('DOMContentLoaded', function () {
@@ -249,7 +306,7 @@
         if (!document.getElementById('pomodoro-fab')) {
             const fab = document.createElement('div');
             fab.id = 'pomodoro-fab';
-            fab.innerHTML = '<span class="pomodoro-fab-icon" style="font-size:1.7em;">🍅</span>';
+            fab.innerHTML = '<span class="pomodoro-fab-icon" style="font-size:1.7em;">⏱</span>';
             fab.style.position = 'fixed';
             fab.style.left = '32px';
             fab.style.bottom = '32px';
@@ -275,7 +332,7 @@
             panel.id = 'pomodoro-panel';
             panel.innerHTML = `
                 <div id="pomodoro-header" style="display:flex;align-items:center;justify-content:space-between;">
-                    <span style="font-weight:bold;">🍅 Pomodoro</span>
+                    <span style="font-weight:bold;">⏱ Pomodoro</span>
                     <button id="pomodoro-close" style="background:none;border:none;font-size:1.2em;cursor:pointer;">✕</button>
                 </div>
                 <div id="pomodoro-timer" style="font-size:2em;text-align:center;margin:0.3em 0;">25:00</div>
