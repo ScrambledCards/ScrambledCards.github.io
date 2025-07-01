@@ -930,3 +930,6 @@ function clearFavorites() {
     localStorage.removeItem('favoriteMoves');
     location.reload();
 }
+
+// Expose a flat move name list globally for XP/quest system
+window.allMoveNames = moveList.flatMap(cat => cat.list.map(m => m.move));
