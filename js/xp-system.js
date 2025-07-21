@@ -176,24 +176,14 @@
         today.setHours(0,0,0,0);
         const diffDays = Math.floor((today - last) / (1000*60*60*24));
         if (diffDays >= 2) {
-            let cumul = loadCumulXP();
             let penalty = 25 * (diffDays - 1); // -1 car le 1er jour sans quêtes n'est pas pénalisé
-            cumul = Math.max(0, cumul - penalty);
-            saveCumulXP(cumul);
+            state.totalXP = Math.max(0, state.totalXP - penalty);
+            saveState();
         }
     }
-    // Correction : déclaration explicite de loadCumulXP pour la pénalité et le calcul XP
-    function loadCumulXP() {
-        return Number(localStorage.getItem('xpSystemSimpleCumul')) || 0;
-    }
-    // Correction : déclaration explicite de saveCumulXP pour la pénalité et le calcul XP
-    function saveCumulXP(xp) {
-        localStorage.setItem('xpSystemSimpleCumul', xp);
-    }
-    // Appliquer la pénalité au chargement de la page (avant calcul XP)
-    applyMissedDaysPenalty();
     // --- Initialisation ---
     loadState();
+    applyMissedDaysPenalty();
     window.addEventListener('DOMContentLoaded', function() {
         window.checkStreakReset();
         renderXPBar();
@@ -202,6 +192,9 @@
     window.gainXP = function(xp) {
         state.totalXP += xp;
         saveState();
+        // Marque la date du jour comme ayant fait une quête (pour la pénalité)
+        const today = new Date().toISOString().slice(0,10);
+        localStorage.setItem(STORAGE_QUESTS_DONE_DATE, today);
         renderXPBar();
     };
     // Pour debug : reset complet de l'XP (non documenté)
