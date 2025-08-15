@@ -1,26 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cardistry Practice - Favorites</title>
+    <title>Learning Stats</title>
     <link rel="icon" href="res/img/logo_v1.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cabin&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=BioRhyme&display=swap" rel="stylesheet">
-    <!-- libs -->
+    <link href="https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <script src="js/moveList.js"></script>
-    <script src="js/favorites.js"></script>
- 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
         <div class="container-fluid">
@@ -29,7 +21,7 @@
                 Scrambled Cards
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="#navbarSupportedContent" aria-expanded="false"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -45,7 +37,7 @@
                         <a class="nav-link" href="combo-generator.html">Combo Generator</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="learning-stats.html">Learning stats</a>
+                        <a class="nav-link active" href="learning-stats.html">Learning stats</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://discord.gg/R2FzpY6">Our discord</a>
@@ -66,11 +58,9 @@
     </nav>
     <div id="main-content">
         <div class="container">
-            <h1>Your Favorite Moves</h1>
-            <button id="clear-favorites" class="btn btn-danger mb-3" onclick="clearFavorites()">Clear Favorites</button>
-            <div id="favorites-list" class="list-group"></div>
-            <div class="alert alert-info mt-3" role="alert">
-                You can add moves to your favorites from the move list page!
+            <h1 class="text-center mb-4">Learning & Practice Stats</h1>
+            <div id="stats-content" class="my-4">
+                <div class="alert alert-info">Loading your stats...</div>
             </div>
         </div>
     </div>
@@ -84,9 +74,12 @@
         </div>
       </div>
     </div>
-    <footer style="text-align:center;margin-top:2em;font-size:0.9em;color:#888;" id="footer"></footer>
+    <footer style="text-align:center;margin-top:2em;font-size:0.9em;color:#888;" id="footer">
+      Version: 1.0.0 (Last updated: 06/2025)
+    </footer>
+    <script src="js/moveList.js"></script>
+    <script src="js/learning-stats.js"></script>
     <script src="js/xp-system.js"></script>
     <script src="js/index-quests.js"></script>
 </body>
-
 </html>
