@@ -157,7 +157,26 @@
     </div>
     <script src="js/version.js"></script>
     <script>
-        getNewMoves()
+        function getNewMovesWithFilter() {
+            var difficulty = document.getElementById('difficultyFilter').value;
+            if (difficulty && difficulty !== 'all') {
+                getNewMovesFiltered();
+            } else {
+                getNewMoves();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            function applyDifficultyFilter() {
+                getNewMovesFiltered();
+            }
+            document.getElementById('applyFilter').addEventListener('click', applyDifficultyFilter);
+            document.querySelector('button.btn-danger[onclick="getNewMoves()"]')
+                .setAttribute('onclick', 'getNewMovesWithFilter()');
+            getNewMovesFiltered();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </script>
 </body>
 
